@@ -1,4 +1,6 @@
 import flet as ft
+from flet.core.types import MainAxisAlignment
+
 
 class View(object):
     def __init__(self, page):
@@ -14,40 +16,19 @@ class View(object):
 
         self._txtOutNMax = ft.TextField(label="N Max", disabled=True, width=200, value=self._controller.getNMax())
         self._txtOutTMax = ft.TextField(label="T Max", disabled=True, width=200, value=self._controller.getTMax())
-        self._txtOutT = ft.TextField(label="T rimanenti", disabled=True, width=200)
+        self._txtOutT = ft.TextField(label="T rimamenti", disabled=True, width=200)
 
-        self._txtIn = ft.TextField(label="Tentativo",
-                                   width=200,
-                                   disabled=True)
-        self._btnReset = ft.ElevatedButton(text="Nuova Partita",
-                                           width=200,
-                                           on_click=self._controller.reset)
-        self._btnPlay = ft.ElevatedButton(text="Gioca",
-                                          width=200,
-                                          on_click=self._controller.play,
-                                          disabled=True)
+        self._txtIn = ft.TextField(label="Tentativo", width=200)
+        self._btnReset = ft.ElevatedButton(text="Nuova partita", width=200, on_click=self._controller.reset)
+        self._btnPlay = ft.ElevatedButton(text="Gioca", width=200, on_click=self._controller.play)
 
         self._lv = ft.ListView(expand=True)
 
         row1 = ft.Container(self._titolo, alignment=ft.alignment.center)
+        row2 = ft.Row([self._txtOutNMax,self._txtOutTMax, self._txtOutT], alignment = MainAxisAlignment.CENTER)
+        row3 = ft.Row([self._btnReset, self._txtIn, self._btnPlay], ft.MainAxisAlignment.CENTER)
 
-        row2 = ft.Row([self._txtOutNMax, self._txtOutTMax, self._txtOutT],
-                      alignment=ft.MainAxisAlignment.CENTER)
-
-        row3 = ft.Row([self._btnReset, self._txtIn, self._btnPlay],
-                      alignment=ft.MainAxisAlignment.CENTER)
-
-        self._sl = ft.Slider(label="Difficoltà",
-                             min=50, max=500,
-                             value=100, width=600, divisions=10)
-        self._sl.on_change = self._controller.setDifficulty
-
-        self._pb = ft.ProgressBar(width=600, color="amber")
-
-
-
-        self._page.add(row1, row2, self._sl, row3, self._pb, self._lv)
-
+        self._page.add(row1, row2, row3, self._lv)
         self._page.update()
 
     def setController(self,controller):
